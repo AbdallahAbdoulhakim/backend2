@@ -15,6 +15,7 @@ const errorHandler = require("./middlewares/errorHandler");
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const postRoutes = require("./routes/postRoutes");
+const commentRoutes = require("./routes/commentRoutes");
 
 require("dotenv").config();
 
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use("/api/user", userRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/post", postRoutes);
+app.use("/api/comment", commentRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
