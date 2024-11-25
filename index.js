@@ -16,6 +16,7 @@ const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
+const menuItemsRoutes = require("./routes/menuItemRoutes");
 
 require("dotenv").config();
 
@@ -32,6 +33,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
+app.use("/api/menu-items", menuItemsRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
