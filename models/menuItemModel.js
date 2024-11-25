@@ -14,9 +14,23 @@ var menuItemSchema = new mongoose.Schema(
       ref: "MenuItem",
       default: null,
     },
+    children: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MenuItem",
+      },
+    ],
   },
   { timestamps: true }
 );
+
+menuItemSchema.post("save", async function (_, next) {
+  await this.constructor.findOneAndUpdate(
+    { _id: this.parent },
+    { $addToSet: { children: this } }
+  );
+  next();
+});
 
 //Export the model
 module.exports = mongoose.model("MenuItem", menuItemSchema);

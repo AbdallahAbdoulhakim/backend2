@@ -14,10 +14,10 @@ const createMenuItem = asyncHandler(async (req, res, next) => {
         id: newMenuItem._id,
         title: newMenuItem.title,
         parent: newMenuItem.parent,
+        children: newMenuItem?.children ? newMenuItem.children : null,
         createdAt: newMenuItem.createdAt,
         updatedAt: newMenuItem.updatedAt,
       },
-      message: "Menu Item created successfully!",
     });
   } catch (error) {
     next(error);
@@ -94,7 +94,16 @@ const getMenuItem = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: retrievedMenuItem,
+      data: {
+        id: retrievedMenuItem._id,
+        title: retrievedMenuItem.title,
+        parent: retrievedMenuItem.parent,
+        children: retrievedMenuItem?.children
+          ? retrievedMenuItem.children
+          : null,
+        createdAt: retrievedMenuItem.createdAt,
+        updatedAt: retrievedMenuItem.updatedAt,
+      },
       message: "Menu item retrieved successfully!",
     });
   } catch (error) {
