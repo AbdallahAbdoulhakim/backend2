@@ -6,7 +6,10 @@ const { formattedMenu } = require("../utils/utils");
 const createMenuItem = asyncHandler(async (req, res, next) => {
   try {
     const body = req.body;
-    const newMenuItem = await menuItemModel.create(body);
+
+    const newMenuItem = await (
+      await menuItemModel.create(body)
+    ).populate({ path: "children" });
 
     res.status(201).json({
       success: true,
@@ -14,7 +17,6 @@ const createMenuItem = asyncHandler(async (req, res, next) => {
         id: newMenuItem._id,
         title: newMenuItem.title,
         parent: newMenuItem.parent,
-        children: newMenuItem?.children ? newMenuItem.children : null,
         createdAt: newMenuItem.createdAt,
         updatedAt: newMenuItem.updatedAt,
       },
@@ -29,9 +31,11 @@ const updateMenuItem = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
     const body = req.body;
 
-    const updatedMenuItem = await menuItemModel.findByIdAndUpdate(id, body, {
-      new: true,
-    });
+    const updatedMenuItem = await (
+      await menuItemModel.findByIdAndUpdate(id, body, {
+        new: true,
+      })
+    ).populate({ path: "children" });
 
     if (!updatedMenuItem) {
       res.status(404);
@@ -44,6 +48,7 @@ const updateMenuItem = asyncHandler(async (req, res, next) => {
         id: updatedMenuItem._id,
         title: updatedMenuItem.title,
         parent: updatedMenuItem.parent,
+        children: updatedMenuItem.children,
         createdAt: updatedMenuItem.createdAt,
         updatedAt: updatedMenuItem.updatedAt,
       },
@@ -58,7 +63,9 @@ const deleteMenuItem = asyncHandler(async (req, res, next) => {
   try {
     const id = req.params.id;
 
-    const deletedMenuItem = await menuItemModel.findByIdAndDelete(id);
+    const deletedMenuItem = await (
+      await menuItemModel.findByIdAndDelete(id)
+    ).populate({ path: "children" });
 
     if (!deletedMenuItem) {
       res.status(404);
@@ -85,7 +92,12 @@ const getMenuItem = asyncHandler(async (req, res, next) => {
   try {
     const id = req.params.id;
 
-    const retrievedMenuItem = await menuItemModel.findById(id);
+    const retrievedMenuItem = await (
+      await menuItemModel.findById(id)
+    ).populate({
+      path: "children",
+      populate: { path: "children", populate: { path: "children" } },
+    });
 
     if (!retrievedMenuItem) {
       res.status(404);
@@ -113,19 +125,14 @@ const getMenuItem = asyncHandler(async (req, res, next) => {
 
 const getAllMenuItems = asyncHandler(async (req, res, next) => {
   try {
-    const menuItems = await menuItemModel.find();
-
-    formattedMenu(menuItems);
+    const menuItems = await menuItemModel.find().populate({
+      path: "children",
+      populate: { path: "children", populate: { path: "children" } },
+    });
 
     res.status(200).json({
       success: true,
-      data: menuItems.map((menuItem) => ({
-        id: menuItem._id,
-        title: menuItem.title,
-        parent: menuItem.parent,
-        createdAt: menuItem.createdAt,
-        updatedAt: menuItem.updatedAt,
-      })),
+      data: menuItems.filter((item) => !item.parent),
       message: "Menu items retrieved successfully!",
     });
   } catch (error) {
