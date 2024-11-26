@@ -1,6 +1,7 @@
 const dbConnect = require("./config/dbConnect");
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const path = require("path");
 const { createWriteStream } = require("fs");
@@ -27,6 +28,7 @@ const app = express();
 dbConnect();
 
 app.use(morgan("combined", { stream: logFs }));
+app.use(cors());
 app.use(express.json());
 
 app.use("/api/user", userRoutes);
