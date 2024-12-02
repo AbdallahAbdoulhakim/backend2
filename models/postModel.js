@@ -19,6 +19,11 @@ var postSchema = new mongoose.Schema(
         ref: "Category",
       },
     ],
+    imgUrls: [
+      {
+        type: String,
+      },
+    ],
   },
   { timestamps: true }
 );

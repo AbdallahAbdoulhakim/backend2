@@ -9,6 +9,11 @@ var menuItemSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
+    link: {
+      type: String,
+      required: true,
+      default: "/",
+    },
     parent: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "MenuItem",

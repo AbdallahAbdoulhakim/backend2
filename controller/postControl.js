@@ -1,4 +1,3 @@
-const { query } = require("express");
 const postModel = require("../models/postModel");
 const asyncHandler = require("express-async-handler");
 
@@ -24,6 +23,7 @@ const createPost = asyncHandler(async (req, res, next) => {
         id: cat.id,
         title: cat.title,
       })),
+      imgUrls: newPost.imgUrls,
       createdAt: newPost.createdAt,
       updatedAt: newPost.updatedAt,
     };
@@ -61,6 +61,7 @@ const updatePost = asyncHandler(async (req, res, next) => {
         id: cat.id,
         title: cat.title,
       })),
+      imgUrls: updatedPost.imgUrls,
       createdAt: updatedPost.createdAt,
       updatedAt: updatedPost.updatedAt,
     };
@@ -97,6 +98,7 @@ const deletePost = asyncHandler(async (req, res, next) => {
         id: cat.id,
         title: cat.title,
       })),
+      imgUrls: deletedPost.imgUrls,
       createdAt: deletedPost.createdAt,
       updatedAt: deletedPost.updatedAt,
     };
@@ -121,8 +123,6 @@ const getPosts = asyncHandler(async (req, res, next) => {
   try {
     const queryParams = req.query;
 
-    console.log(queryParams.offset);
-
     const query = queryParams?.search
       ? {
           $or: [
@@ -140,7 +140,7 @@ const getPosts = asyncHandler(async (req, res, next) => {
         : 5,
       offset: queryParams?.offset ? queryParams.offset : 0,
       customLabels: postsLabels,
-      sort: { createAtd: -1 },
+      sort: { createdAt: -1 },
       populate: "author categories",
     };
 
@@ -160,6 +160,7 @@ const getPosts = asyncHandler(async (req, res, next) => {
         id: cat.id,
         title: cat.title,
       })),
+      imgUrls: post.imgUrls,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,
     }));

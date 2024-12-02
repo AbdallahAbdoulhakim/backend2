@@ -16,6 +16,7 @@ const createMenuItem = asyncHandler(async (req, res, next) => {
       data: {
         id: newMenuItem._id,
         title: newMenuItem.title,
+        link: newMenuItem.link,
         parent: newMenuItem.parent,
         createdAt: newMenuItem.createdAt,
         updatedAt: newMenuItem.updatedAt,
@@ -47,6 +48,7 @@ const updateMenuItem = asyncHandler(async (req, res, next) => {
       data: {
         id: updatedMenuItem._id,
         title: updatedMenuItem.title,
+        link: updatedMenuItem.link,
         parent: updatedMenuItem.parent,
         children: updatedMenuItem.children,
         createdAt: updatedMenuItem.createdAt,
@@ -77,6 +79,7 @@ const deleteMenuItem = asyncHandler(async (req, res, next) => {
       data: {
         id: deletedMenuItem._id,
         title: deletedMenuItem.title,
+        link: deletedMenuItem.link,
         parent: deletedMenuItem.parent,
         createdAt: deletedMenuItem.createdAt,
         updatedAt: deletedMenuItem.updatedAt,
@@ -109,6 +112,7 @@ const getMenuItem = asyncHandler(async (req, res, next) => {
       data: {
         id: retrievedMenuItem._id,
         title: retrievedMenuItem.title,
+        link: retrievedMenuItem.link,
         parent: retrievedMenuItem.parent,
         children: retrievedMenuItem?.children
           ? retrievedMenuItem.children
